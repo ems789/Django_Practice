@@ -1,4 +1,23 @@
+{% load static %} {% comment %} 스타일시트와 같은 스태틱 파일을 사용하기 위해서
+삽입해야 하는 태그. 그래야만 {% static ... %}와 같은 탬플릿 태그 사용 가능 {% endcomment %}
+<link rel="stylesheet" type="text/css" href="{% static 'style.css'%}">
 <h1>{{ question.subject }}</h1>
 <div>
     {{ question.content }}
 </div>
+<h5>{{ question.answer_set.count }}개의 답변이 있습니다.</h5>
+<div>
+    <ul>
+    {% for answer in question.answer_set.all %} {% comment %} 질문과 연결된 답변 {% endcomment %}
+        <li>{{ answer.content }}</li>
+    {% endfor %}
+    </ul>
+</div>
+<form action="{% url 'answer_create' question.id %}" method="post">
+{% csrf_token %} {% comment %} 보안에 관련된 항목, form으로 전송한 데이터가
+실제 웹페이지에서 작성한 데이터인지를 판단하는 역할을 함
+이상한 방법으로 데이터를 전송할 경우에는 서버에서 발행하는 csrf_toekn 값과
+해커가 일방적으로 보낸 csrf_token 값이 일치하지 않기 떄문에 블로킹 됨 {% endcomment %}
+<textarea name="content" id="content" rows="15"></textarea>
+<input type="submit" value="답변등록">
+</form>
