@@ -1,0 +1,8 @@
+{% if question_list %}
+    <ul>
+    {% for question in question_list %} {% comment %} views.py 에게 넘겨 받은 딕셔너리 {% endcomment %}
+        <li><a href="{% url 'detail' question.id %}/">{{ question.subject }}</a></li>
+    {% endfor %}
+{% else %}
+    <p>질문이 없습니다.</p>
+{% endif %}
