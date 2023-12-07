@@ -22,5 +22,5 @@ create_date=timezone.now())
     # 답변을 생성하기 위해 question.answer_set.create를 사용
     # Question과 Answer 모델은 서로 ForeignKey로 연결되어 있기 때문에 이처럼 사용할 수 있다.
 
-    return redirect('detail', question_id=question.id)
+    return redirect('pybo:detail', question_id=question.id)
     # 답변 생성 후 질문 페이지를 다시 보여주기 위해 redirect 함수를 사용.
