@@ -2,6 +2,6 @@ from django import template
 
 register = template.Library()
 
-@register.filter
+@register.filter # 템플릿에서 해당 함수를 필터로 사용할 수 있게 해줌
 def sub(value, arg):
     return value - arg
