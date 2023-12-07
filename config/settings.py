@@ -127,3 +127,9 @@ STATICFILES_DIRS = [
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# 로그인시 이동하는 URL ('/accounts/profile/'에서 '/'로 변경)
+LOGIN_REDIRECT_URL = '/' 
+
+# 로그아웃시 이동하는 URL
+LOGOUT_REDIRECT_URL = '/'
