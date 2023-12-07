@@ -38,6 +38,12 @@
                 {% if request.user == question.author %}
                 <a href="{% url 'pybo:question_modify' question.id  %}" 
                    class="btn btn-sm btn-outline-secondary">수정</a>
+                <a href="javascript:void(0)" class="delete btn btn-sm btn-outline-secondary"
+                    data-uri="{% url 'pybo:question_delete' question.id  %}">삭제</a>   
+                    {% comment %} href 속성값을 javascript:void(0)로 설정하면 해당 링크를 클릭해도 아무런 동작도 하지 않는다.
+                    데이터를 바로 삭제하지 않고 확인 창을 띄우기 위해서 이런 기능이 필요하다. {% endcomment %}
+                    {% comment %} data-url 속성은 자바스크립트에서 클릭 이벤트 발생시
+                    this.dataset.uri를 사용하여 얻을 수 있다 {% endcomment %}
                 {% endif %}
             </div>
         </div>
@@ -74,4 +80,16 @@
         <input type="submit" value="답변등록" class="btn btn-primary">
     </form>
 </div>
+{% endblock %}
+{% block script %}
+<script type='text/javascript'>
+const delete_elements = document.getElementsByClassName("delete");
+Array.from(delete_elements).forEach(function(element) {
+    element.addEventListener('click', function() {
+        if(confirm("정말로 삭제하시겠습니까?")) {
+            location.href = this.dataset.uri;
+        };
+    });
+});
+</script>
 {% endblock %}
