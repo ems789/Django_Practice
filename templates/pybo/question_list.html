@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load pybo_filter %}
 {% block content %}
 <div class="container my-3">
     <table class="table">
@@ -13,7 +14,10 @@
         {% if question_list %}
         {% for question in question_list %}
         <tr>
-            <td>{{ forloop.counter }}</td>
+            <td>
+                {% comment %} 번호 = 전체건수 - 시작인덱스 - 현재인덱스 + 1 {% endcomment %}
+                {{ question_list.paginator.count|sub:question_list.start_index|sub:forloop.counter0|add:1 }}
+            </td>
             <td>
                 <a href="{% url 'pybo:detail' question.id %}">{{ question.subject }}</a>
             </td>
@@ -42,6 +46,7 @@
         <!-- 페이지리스트 -->
         {% for page_number in question_list.paginator.page_range %}
         {% if page_number >= question_list.number|add:-5 and page_number <= question_list.number|add:5 %}
+        {% comment %} |add:-5 |add:5 는 템플릿 필터, 현재 페이지 기준 좌우 5개씩 보이도록 함 {% endcomment %}
         {% if page_number == question_list.number %}
         <li class="page-item active" aria-current="page">
             <a class="page-link" href="?page={{ page_number }}">{{ page_number }}</a>
