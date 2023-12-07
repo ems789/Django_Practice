@@ -4,6 +4,7 @@ from django.http import HttpResponseNotAllowed
 from .models import Question
 from .forms import QuestionForm, AnswerForm
 from django.core.paginator import Paginator
+from django.contrib.auth.decorators import login_required
 
 def index(request):
     page = request.GET.get('page', '1')  # 페이지
@@ -19,12 +20,15 @@ def detail(request, question_id):
     context = {'question': question} # 이게 뭐임?
     return render(request, 'pybo/question_detail.html', context)
 
+@login_required(login_url='common:login') # @login_required 애너테이션이 붙은 함수는 로그인이 필요한 함수
+# 로그인 URL을 지정할 수 있다.
 def answer_create(request, question_id): 
     question = get_object_or_404(Question, pk=question_id)
     if request.method == "POST":
         form = AnswerForm(request.POST)
         if form.is_valid():
             answer = form.save(commit=False)
+            answer.author = request.user
             answer.create_date = timezone.now()
             answer.question = question
             answer.save()
@@ -34,12 +38,14 @@ def answer_create(request, question_id):
     context = {'question': question, 'form': form}
     return render(request, 'pybo/question_detail.html', context)
 
+@login_required(login_url='common:login')
 def question_create(request):
     # URL 요청을 POST, GET 요청 방식에 따라 다르게 처리
     if request.method == 'POST': # 폼을 채우고 '저장하기' 버튼을 눌렀을 때
         form = QuestionForm(request.POST)
         if form.is_valid():
             question = form.save(commit=False) # 임시 저장을 하여 question 객체를 리턴 받음
+            question.author = request.user
             question.create_date = timezone.now()
             question.save()
             return redirect('pybo:index')
