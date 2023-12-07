@@ -31,7 +31,7 @@ def question_create(request):
     if request.method == 'POST': # 폼을 채우고 '저장하기' 버튼을 눌렀을 때
         form = QuestionForm(request.POST)
         if form.is_valid():
-            question = form.save(commit=False)
+            question = form.save(commit=False) # 임시 저장을 하여 question 객체를 리턴 받음
             question.create_date = timezone.now()
             question.save()
             return redirect('pybo:index')
