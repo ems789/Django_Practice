@@ -2,7 +2,7 @@ from django.urls import path
 
 from .views import base_views, question_views, answer_views
 
-app_name = 'pybo'
+app_name = 'pybo' # URL 별칭 지정, 함수의 이름이 겹치는 것을 예방
 
 urlpatterns = [
     # base_views.py
